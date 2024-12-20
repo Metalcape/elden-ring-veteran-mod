@@ -1,0 +1,69 @@
+cmake_minimum_required(VERSION 3.28.1)
+
+set(CMAKE_GENERATOR_PLATFORM x64)
+
+project(veteransote
+  VERSION   "1.1.2"
+  LANGUAGES CXX)
+
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_INTERPROCEDURAL_OPTIMIZATION TRUE)
+
+include(FetchContent)
+
+FetchContent_Declare(mini
+  GIT_REPOSITORY        https://github.com/metayeti/mINI.git
+  GIT_TAG               0.9.15
+  CONFIGURE_COMMAND     ""
+  BUILD_COMMAND         "")
+
+set(SPDLOG_DISABLE_DEFAULT_LOGGER ON)
+set(SPDLOG_USE_STD_FORMAT ON)
+FetchContent_Declare(spdlog
+  GIT_REPOSITORY        https://github.com/gabime/spdlog.git
+  GIT_TAG               v1.13.0)
+
+set(SWSDK_VERSION "1.59")
+set(SWSDK_RELEASE "x64")
+FetchContent_Declare(steamworks-sdk
+  URL                   https://github.com/julianxhokaxhiu/SteamworksSDKCI/releases/download/${SWSDK_VERSION}/SteamworksSDK-v${SWSDK_VERSION}.0_${SWSDK_RELEASE}.zip
+  CONFIGURE_COMMAND     ""
+  BUILD_COMMAND         "")
+
+FetchContent_Declare(elden-x
+  GIT_REPOSITORY        https://github.com/Metalcape/elden-x.git
+  GIT_TAG               0964329f056569b5bf4694e8c56837b59eecddd5)
+
+# Set iterator debug level to 0 for ELDEN RING ABI compatibility
+add_definitions(-D_ITERATOR_DEBUG_LEVEL=0)
+
+FetchContent_MakeAvailable(mini spdlog steamworks-sdk elden-x)
+
+add_library(mini INTERFACE)
+target_include_directories(mini INTERFACE ${mini_SOURCE_DIR}/src)
+
+add_library(steamworks-sdk STATIC IMPORTED GLOBAL)
+target_include_directories(steamworks-sdk INTERFACE ${steamworks-sdk_SOURCE_DIR}/include)
+set_property(TARGET steamworks-sdk APPEND PROPERTY IMPORTED_CONFIGURATIONS DEBUG)
+set_target_properties(steamworks-sdk PROPERTIES
+        IMPORTED_LINK_INTERFACE_LANGUAGES_DEBUG CXX
+        IMPORTED_LOCATION_DEBUG ${steamworks-sdk_SOURCE_DIR}/lib/steam/steam_api64.lib)
+
+add_library(veteransote SHARED
+  src/veteran_speffect.hpp
+  src/veteran_speffect.cpp
+  src/veteran_config.hpp
+  src/veteran_config.cpp
+  src/dllmain.cpp)
+
+set_target_properties(veteransote PROPERTIES OUTPUT_NAME "veteran")
+
+add_definitions(-DPROJECT_VERSION="${CMAKE_PROJECT_VERSION}")
+
+add_custom_command(TARGET veteransote POST_BUILD
+  COMMAND ${CMAKE_COMMAND} -E copy -t $<TARGET_FILE_DIR:veteransote>
+  ${CMAKE_SOURCE_DIR}/LICENSE.txt
+  ${CMAKE_SOURCE_DIR}/veteran_config.ini
+  COMMAND_EXPAND_LISTS)
+
+target_link_libraries(veteransote mini spdlog steamworks-sdk elden-x)
