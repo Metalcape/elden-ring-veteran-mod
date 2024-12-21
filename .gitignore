@@ -414,3 +414,12 @@ CTestTestfile.cmake
 _deps
 
 build/
+
+# Mod files
+*.bak
+*.prev
+*.dcx.js
+mod/menu/hi/
+mod/sfx/sfxbnd_commoneffects-ffxbnd-dcx-wffxbnd/
+mod/.smithbox/
+mod/project.json
