@@ -418,8 +418,8 @@ build/
 # Mod files
 *.bak
 *.prev
-*.dcx.js
+# *.dcx.js
 mod/menu/hi/
 mod/sfx/sfxbnd_commoneffects-ffxbnd-dcx-wffxbnd/
 mod/.smithbox/
-mod/project.json
+# mod/project.json
