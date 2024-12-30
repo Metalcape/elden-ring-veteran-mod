@@ -1,0 +1,85 @@
+{
+  "ProjectName": "Veteran",
+  "GameRoot": "C:\\SteamLibrary\\steamapps\\common\\ELDEN RING\\Game",
+  "GameType": 8,
+  "PinnedParams": [],
+  "PinnedRows": {
+    "WorldMapPointParam": [
+      95105,
+      95800,
+      97000,
+      97003,
+      97001,
+      97002,
+      97020,
+      97010,
+      88800000,
+      88800001,
+      88800002,
+      88800003
+    ],
+    "TalkParam": [
+      70042001,
+      70042000,
+      70042002,
+      70042003,
+      70042004,
+      70042010,
+      70042011,
+      70042012,
+      70042013,
+      70042014,
+      70042020,
+      70042030
+    ],
+    "SpEffectParam": [
+      42000000,
+      42000010,
+      42000,
+      3242,
+      42001,
+      3241,
+      18696,
+      9890
+    ],
+    "NpcParam": [
+      420000010,
+      420000000,
+      420000020
+    ],
+    "ItemLotParam_map": [
+      20000850,
+      20000840,
+      20000860,
+      20000870
+    ],
+    "FaceParam": [
+      42000
+    ],
+    "EquipParamGoods": [
+      42000,
+      42010
+    ],
+    "EquipParamAccessory": [
+      420000
+    ],
+    "CharaInitParam": [
+      42000
+    ],
+    "BonfireWarpParam": [
+      61423600,
+      61423601,
+      61484200,
+      210002,
+      210001
+    ]
+  },
+  "PinnedFields": {
+    "SpEffectParam": [
+      "animIdOffset"
+    ]
+  },
+  "UseLooseParams": false,
+  "PartialParams": false,
+  "LastFmgLanguageUsed": ""
+}
