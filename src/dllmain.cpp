@@ -10,12 +10,8 @@
 #include <elden-x/params/params.hpp>
 #include <elden-x/utils/modutils.hpp>
 
-// #include "erdyes_apply_materials.hpp"
-// #include "erdyes_local_player.hpp"
-// #include "erdyes_messages.hpp"
-// #include "erdyes_talkscript.hpp"
-
 #include "veteran_speffect.hpp"
+#include "veteran_binoculars.hpp"
 #include "veteran_config.hpp"
 
 
@@ -32,17 +28,7 @@ static void setup_mod()
 
     spdlog::info("Hooking speffects...");
     veteran::setup_speffects();
-
-
-    // spdlog::info("Hooking messages...");
-    // erdyes::setup_messages();
-
-    // erdyes::local_player::init();
-
-    // spdlog::info("Hooking talkscripts...");
-    // erdyes::setup_talkscript();
-
-    // erdyes::apply_materials_init();
+    veteran::setup_binoculars();
 
     modutils::enable_hooks();
     spdlog::info("Initialized mod");

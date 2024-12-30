@@ -9,6 +9,7 @@
 
 static int *clearcount = nullptr;
 
+// Special effects applied and cleared from event scripts
 static int (*apply_speffect)(from::CS::ChrIns *chrins, unsigned int speffect_id, bool unk);
 static int (*clear_speffect)(from::CS::ChrIns *chrins, unsigned int speffect_id);
 static int apply_speffect_detour(from::CS::ChrIns *chrins, unsigned int speffect_id, bool unk) 
@@ -29,15 +30,8 @@ static int apply_speffect_detour(from::CS::ChrIns *chrins, unsigned int speffect
         spdlog::info("Set character to NG");
     }
 
-    // Binoculars of the Veteran
-    if(speffect_id == veteran::freecam_speffect_id)
-    {
-        spdlog::info("Freecam toggle");
-    }
-
     return retval;
 }
-
 
 // Unused for now
 // static void (*spawn_one_shot_sfx_on_chr)(from::CS::ChrIns *, int dummy_poly_id, int sfx_id, void *unk);
@@ -112,20 +106,12 @@ void veteran::setup_speffects()
     //     },
     //     spawn_one_shot_sfx_on_chr_detour, spawn_one_shot_sfx_on_chr
     // );
-
-    // static int (*specil_effect_apply)()
-    // modutils::hook(
-    //     {
-    //         .aob = "0f b6 84 ?? b0 00 00 00 ?? 8b f1 88 44 ?? 20 ?? 8b f0 8b ea ?? 8b f9 e8 ?? ?? ?? ?? 84 c0 0f 84 ?? ?? ?? ?? ",
-    //         .offset = -0x13
-    //     },
-    //     special_effect_apply_detour, special_effect_apply
-    // )
 }
 
 bool veteran::has_speffect(from::CS::ChrIns *player, int speffect_id)
 {
-    if (player == nullptr)
+    // OR short-circuit used here
+    if (player == nullptr || player->special_effects == nullptr)
     {
         return false;
     }

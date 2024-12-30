@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.28.1)
 set(CMAKE_GENERATOR_PLATFORM x64)
 
 project(veteransote
-  VERSION   "1.1.2"
+  VERSION   "0.1.0"
   LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 20)
@@ -32,7 +32,7 @@ FetchContent_Declare(steamworks-sdk
 
 FetchContent_Declare(elden-x
   GIT_REPOSITORY        https://github.com/Metalcape/elden-x.git
-  GIT_TAG               0964329f056569b5bf4694e8c56837b59eecddd5)
+  GIT_TAG               origin/main)
 
 # Set iterator debug level to 0 for ELDEN RING ABI compatibility
 add_definitions(-D_ITERATOR_DEBUG_LEVEL=0)
@@ -52,6 +52,8 @@ set_target_properties(steamworks-sdk PROPERTIES
 add_library(veteransote SHARED
   src/veteran_speffect.hpp
   src/veteran_speffect.cpp
+  src/veteran_binoculars.hpp
+  src/veteran_binoculars.cpp
   src/veteran_config.hpp
   src/veteran_config.cpp
   src/dllmain.cpp)
