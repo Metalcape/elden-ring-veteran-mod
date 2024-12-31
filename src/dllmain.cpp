@@ -9,9 +9,9 @@
 
 #include <elden-x/params/params.hpp>
 #include <elden-x/utils/modutils.hpp>
+#include <elden-x/gameman.hpp>
 
 #include "veteran_speffect.hpp"
-#include "veteran_binoculars.hpp"
 #include "veteran_config.hpp"
 
 
@@ -25,10 +25,9 @@ static void setup_mod()
 
     spdlog::info("Sleeping for {}ms...", veteran::config::initialize_delay);
     std::this_thread::sleep_for(std::chrono::milliseconds(veteran::config::initialize_delay));
-
+    
     spdlog::info("Hooking speffects...");
     veteran::setup_speffects();
-    veteran::setup_binoculars();
 
     modutils::enable_hooks();
     spdlog::info("Initialized mod");

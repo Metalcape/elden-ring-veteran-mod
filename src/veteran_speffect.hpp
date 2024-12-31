@@ -8,6 +8,9 @@ namespace veteran
 {
 // static constexpr size_t net_player_max = 6;
 static constexpr int ng_speffect_base_id = 42000010;
+static constexpr int freecam_speffect_id = 3241;
+
+static constexpr unsigned char freecam_patch[] = {0xB0, 0x01, 0xC3};    // mov al,1; ret
 
 // typedef int apply_speffect_fn(from::CS::ChrIns *chrins, unsigned int speffect_id, bool unk);
 // typedef int clear_speffect_fn(from::CS::ChrIns *chrins, unsigned int speffect_id);

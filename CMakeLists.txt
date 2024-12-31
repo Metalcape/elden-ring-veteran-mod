@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.28.1)
 set(CMAKE_GENERATOR_PLATFORM x64)
 
 project(veteransote
-  VERSION   "0.1.0"
+  VERSION   "1.0.0"
   LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 20)
@@ -52,8 +52,6 @@ set_target_properties(steamworks-sdk PROPERTIES
 add_library(veteransote SHARED
   src/veteran_speffect.hpp
   src/veteran_speffect.cpp
-  src/veteran_binoculars.hpp
-  src/veteran_binoculars.cpp
   src/veteran_config.hpp
   src/veteran_config.cpp
   src/dllmain.cpp)
@@ -68,4 +66,4 @@ add_custom_command(TARGET veteransote POST_BUILD
   ${CMAKE_SOURCE_DIR}/veteran_config.ini
   COMMAND_EXPAND_LISTS)
 
-target_link_libraries(veteransote mini spdlog steamworks-sdk elden-x)
+target_link_libraries(veteransote mini spdlog steamworks-sdk elden-x synchronization.lib)

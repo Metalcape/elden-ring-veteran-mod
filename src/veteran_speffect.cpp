@@ -6,6 +6,16 @@
 #include <elden-x/gamedata/game_data_man.hpp>
 #include <spdlog/spdlog.h>
 
+static from::CS::PlayerIns *player = nullptr;
+static from::CS::FieldArea *field_area = nullptr;
+static from::CS::FloatVector4 *player_pos = nullptr;
+static from::CS::FloatVector4 *debug_cam_pos = nullptr;
+static from::CS::FloatVector4 last_freecam_pos;
+
+static std::vector<unsigned char> freecam_code_original(sizeof(veteran::freecam_patch));
+static void do_freecam_patch(bool is_apply);
+static bool (*can_debug_cam_activate)();
+static bool is_first_activation = true;
 
 static int *clearcount = nullptr;
 
@@ -31,6 +41,28 @@ static int apply_speffect_detour(from::CS::ChrIns *chrins, unsigned int speffect
     }
 
     return retval;
+}
+
+// Generic function called to apply any SpEffect from any source
+static int (*special_effect_apply)(from::CS::SpecialEffect *obj, unsigned int sp_effect_id, from::CS::ChrIns *target, from::CS::ChrIns *source, from::CS::FloatVector4 *unk0, unsigned char unk1, bool is_for_object, unsigned char unk2);
+int special_effect_apply_detour(from::CS::SpecialEffect *obj, unsigned int sp_effect_id, from::CS::ChrIns *target, from::CS::ChrIns *source, from::CS::FloatVector4 *unk0, unsigned char unk1, bool is_for_object, unsigned char unk2)
+{
+    // Binoculars of the Veteran
+    if(sp_effect_id == veteran::freecam_speffect_id)
+    {
+        if(veteran::has_speffect(target, veteran::freecam_speffect_id)) {
+            spdlog::info("Freecam off");
+            do_freecam_patch(false);
+            return clear_speffect(target, veteran::freecam_speffect_id);
+        }
+        else
+        {
+            spdlog::info("Freecam on");
+            do_freecam_patch(true);
+        }
+    }
+
+    return special_effect_apply(obj, sp_effect_id, target, source, unk0, unk1, is_for_object, unk2);
 }
 
 // Unused for now
@@ -82,14 +114,27 @@ void veteran::setup_speffects()
         apply_speffect_detour, apply_speffect
     );
 
-    // ChrIns::ClearSpEffect hooks
-    // modutils::hook(
-    //     {
-    //     .address = disable_enable_grace_warp_address + 35,
-    //     .relative_offsets = {{1, 5}},
-    //     },
-    //     clear_speffect_detour, clear_speffect
-    // );
+    // ChrIns::ClearSpEffect
+    auto clear_speffect_addr = modutils::scan<unsigned char>(
+        {
+        .address = disable_enable_grace_warp_address + 35,
+        .relative_offsets = {{1, 5}},
+        }
+    );
+
+    clear_speffect = reinterpret_cast<int(*)(from::CS::ChrIns *, unsigned int)>(clear_speffect_addr);
+
+    // SpecialEffect::Apply
+    modutils::hook(
+        {
+            .aob = "e8 ?? ?? ?? ??"     // call 0x4FC5B0
+                   "84 c0"              // test al, al
+                   "0f 84 ?? ?? ?? ??"  // jz return
+                   "48 83 cf ff",       // or rdi, -1
+            .offset = -42
+        },
+        special_effect_apply_detour, special_effect_apply
+    );
 
     // EMEVD::SpawnOneShotSFXOnChr hooks
     // modutils::hook({
@@ -106,6 +151,75 @@ void veteran::setup_speffects()
     //     },
     //     spawn_one_shot_sfx_on_chr_detour, spawn_one_shot_sfx_on_chr
     // );
+}
+
+static void do_freecam_patch(bool is_apply)
+{
+    // Find memory addresses
+    // Must be done every time to avoid crashing after quitout
+    player = from::CS::WorldChrManImp::instance()->main_player;
+    auto field_area_ptr = modutils::scan<from::CS::FieldArea *>(
+        {
+            .aob = "48 8B 3D ?? ?? ?? ??"
+                   "49 8B D8"
+                   "48 8B F2"
+                   "4C 8B F1"
+                   "48 85 FF",
+            .relative_offsets = {{3, 7}},
+        }
+    );
+    field_area = *field_area_ptr;
+
+    // _CanDebugCamActivate trampoline
+    auto can_debug_cam_activate_addr = modutils::scan<unsigned char>({
+        .aob = "E8 ?? ?? ?? ?? 84 C0 0F 85 ?? ?? ?? ?? 38 03",
+        .relative_offsets = {{1, 5}},
+    });
+
+    can_debug_cam_activate = reinterpret_cast<bool(*)()>(can_debug_cam_activate_addr);
+    debug_cam_pos = &(field_area->game_rend->debug_cam->camera_pos);
+    player_pos = &(player->modules->physics_module->position);
+
+    // Read contents of memory at function address
+    std::vector<unsigned char> buffer(sizeof(veteran::freecam_patch));
+    modutils::read(buffer, can_debug_cam_activate, sizeof(veteran::freecam_patch));
+
+    if(is_apply)
+    {
+        // Check for original instruction
+        if(buffer[0] == 0xEB)
+        {
+            freecam_code_original = buffer;
+            modutils::write(veteran::freecam_patch, can_debug_cam_activate, sizeof(veteran::freecam_patch));
+
+            if(is_first_activation)
+            {
+                debug_cam_pos->x = player_pos->x;
+                debug_cam_pos->y = player_pos->y + 1.7f;  // Adjust to player's head
+                debug_cam_pos->z = player_pos->z;
+
+                last_freecam_pos = *debug_cam_pos;
+                is_first_activation = false;
+            }
+            else
+            {
+                *debug_cam_pos = last_freecam_pos;
+            }
+            
+            field_area->game_rend->is_debug_cam_active = 1;
+        }
+    }
+    else
+    {
+        // Check for modified instruction
+        if(buffer[0] == veteran::freecam_patch[0])
+        {
+            modutils::write(freecam_code_original.data(), can_debug_cam_activate, sizeof(veteran::freecam_patch));
+            field_area->game_rend->is_debug_cam_active = 0;
+
+            last_freecam_pos = *debug_cam_pos;
+        }
+    }
 }
 
 bool veteran::has_speffect(from::CS::ChrIns *player, int speffect_id)
