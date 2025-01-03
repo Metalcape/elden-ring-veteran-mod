@@ -1,0 +1,34 @@
+BASE FLAG ID: 1040640000
+
+--- Progression ---
+1040640000:	Disabilita NPC scadu altus
+1040640001:	Disabilita NPC jagged peak
+1040640002:	Disabilita NPC melmina spettrale
+
+--- Effetti ---
+1040644010:	NG+ modificato
+104064401x:	Livello NG+ originale (1 - 8)
+
+--- Item lot ---
+20007840:	Talisman pick up
+1040647000:	Binocolo pick up
+1040647010:	NG+ pick up
+1040647020:	Aggro finger pick up
+
+--- Grazie ---
+104064800x:	Grazie argentate shadow keep -> pillar
+
+--- Spettro scadu altus crossroads ---
+1040649000:	Primo dialogo letto (NON USARE)
+1040649001:	Secondo dialogo letto (NON USARE)
+1040649002:	Primo dialogo letto
+1040649003:	Secondo dialogo letto
+1040649004:	Fine dialogo ( --> EMEVD animazione )
+
+--- Spettro jagged peak ---
+1040649010:	Primo dialogo letto
+1040649011:	Scelta 1 fatta
+1040649012:	Scelta 2 fatta
+1040649013:	Fine dialogo ( --> EMEVD )
+
+
