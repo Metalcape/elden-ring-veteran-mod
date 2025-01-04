@@ -69,6 +69,7 @@ $Event(1040641001, Restart, function() {
 
 // [Veteran] Aggro finger change team type
 $Event(1040641002, Restart, function() {
+    DisableNetworkSync();
     if(PlayerHasItem(ItemType.Goods, 42010)) {
         // Diventa spettro
         WaitFor(CharacterHasSpEffect(10000, 42000));
