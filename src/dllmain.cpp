@@ -76,7 +76,7 @@ bool WINAPI DllMain(HINSTANCE dll_instance, unsigned int fdw_reason, void *lpv_r
         veteran::load_config(folder / "veteran_config.ini");
 
 #ifndef _DEBUG
-        if (erdyes::config::debug)
+        if (veteran::config::debug)
         {
             enable_debug_logging(logger);
         }
