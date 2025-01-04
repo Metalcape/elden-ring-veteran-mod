@@ -58,7 +58,10 @@
     ],
     "EquipParamGoods": [
       42000,
-      42010
+      42010,
+      2040,
+      3320,
+      100
     ],
     "EquipParamAccessory": [
       420000
