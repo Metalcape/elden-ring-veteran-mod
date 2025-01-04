@@ -33,9 +33,12 @@ void veteran::load_config(const std::filesystem::path &ini_path)
     {
         auto &veteran_config = ini["veteran"];
 
-        if (veteran_config.has("debug") && veteran_config["debug"] != "false")
+        if (veteran_config.has("debug"))
         {
-            veteran::config::debug = true;
+            if(veteran_config["debug"] == "false")
+                veteran::config::debug = false;
+            else
+                veteran::config::debug = true;
         }
 
         if (veteran_config.has("initialize_delay"))
