@@ -245,4 +245,5 @@
   <SubTexture name="MENU_ItemIcon_40824.png" x="0" y="0" width="160" height="160" half="0" />
   <SubTexture name="MENU_ItemIcon_45001.png" x="3443" y="0" width="160" height="160" half="0" />
   <SubTexture name="MENU_ItemIcon_45002.png" x="3606" y="0" width="160" height="160" half="0" />
+  <SubTexture name="MENU_ItemIcon_45003.png" x="3769" y="0" width="160" height="160" half="0" />
 </TextureAtlas>

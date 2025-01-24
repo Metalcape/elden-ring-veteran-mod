@@ -4,6 +4,10 @@ BASE FLAG ID: 1040640000
 1040640000:	Disabilita NPC scadu altus
 1040640001:	Disabilita NPC jagged peak
 1040640002:	Disabilita NPC melmina spettrale
+1040640003:	Disabilita NPC specimen storehouse
+1040640004:	Disabilita NPC camera oscura
+1040640005:	Disabilita NPC da Messmer
+1040640100:	Challenge Messmer avviata
 
 --- Effetti ---
 1040644010:	NG+ modificato
@@ -13,10 +17,11 @@ BASE FLAG ID: 1040640000
 20007840:	Talisman pick up
 1040647000:	Binocolo pick up
 1040647010:	NG+ pick up
-1040647020:	Aggro finger pick up
+1040647020:	Mano sciolta pick up
 
 --- Grazie ---
 104064800x:	Grazie argentate shadow keep -> pillar
+1040648010:	Trigger globale grazie argentate
 
 --- Spettro scadu altus crossroads ---
 1040649000:	Primo dialogo letto (NON USARE)
@@ -31,4 +36,21 @@ BASE FLAG ID: 1040640000
 1040649012:	Scelta 2 fatta
 1040649013:	Fine dialogo ( --> EMEVD )
 
+--- Spettro specimen storehouse ---
+1040649020:	Primo dialogo letto
+1040649021:	Secondo dialogo letto
+1040649022:	Scelta 1 fatta
+1040649023:	Scelta 2 fatta
+1040649024:	Terzo dialogo letto (uno di due)
+1040649025:	Quarto dialogo letto ( --> EMEVD )
+
+--- Spettro da Messmer ---
+1040649030:	Primo dialogo letto
+1040649031:	Secondo dialogo letto
+1040649032:	Terzo dialogo letto ( --> EMEVD )
+
+--- Spettro dopo Messmer ---
+1040649040:	Primo dialogo letto
+1040649041:	Secondo dialogo letto
+1040649042:	Terzo dialogo letto ( --> EMEVD )
 

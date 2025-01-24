@@ -5,7 +5,6 @@ As seen in Sabaku No Maiku and Cydonia's Shadow of the Erdtree "Veteran Run" str
 ## Installation
 
 There is not much to see in this mod for now, as it was made specifically to be shown on stream, so there is no clear progression linking the different events, but if you want to try it, it's possible to play it using Mod Engine 2. The DLL must be compiled using CMake and loaded with mod engine by configuring its `.toml` file.
-- :us::uk:: If you wish to invade Sabaku and Cydonia during their streams, please use [this guide](https://gist.github.com/Metalcape/4ce176e1daf790ee977010eab17b9ba2) to see how to set up Seamless Coop and DENmaps together with this mod.
 - :it:: *Se volete invadere Sabaku e Cydonia durante le live, usate [questa guida](https://gist.github.com/Metalcape/4ce176e1daf790ee977010eab17b9ba2) per vedere come utilizzare questa mod insieme alla Seamless Coop e DENmaps.*
 
 ## Credits

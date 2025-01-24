@@ -1,4 +1,0 @@
-$Event(0, Default, function() {
-    // [Veteran] Grazia argentata (grazia shadow keep main gate plaza)
-    InitializeCommonEvent(0, 90005103, 72101, 72101, 61480000, 1040648000, 0, 1040648000, 1040648001, 1040648002, 1040648003, 1040648004, 1040648005, 1040648006, 1040648007, 1040648008, 1040648009);
-});
