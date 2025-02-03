@@ -10,6 +10,7 @@
 #include <elden-x/params/params.hpp>
 #include <elden-x/utils/modutils.hpp>
 #include <elden-x/game_man.hpp>
+#include <elden-x/singletons.hpp>
 
 #include "veteran_speffect.hpp"
 #include "veteran_config.hpp"
@@ -20,7 +21,9 @@ static std::thread mod_thread;
 static void setup_mod()
 {
     modutils::initialize();
-
+    std::this_thread::sleep_for(std::chrono::seconds(1));
+    er::FD4::find_singletons();
+    
     er::CS::SoloParamRepository::wait_for_params();
 
     spdlog::info("Sleeping for {}ms...", veteran::config::initialize_delay);
