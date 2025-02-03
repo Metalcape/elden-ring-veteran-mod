@@ -9,7 +9,7 @@
 
 #include <elden-x/params/params.hpp>
 #include <elden-x/utils/modutils.hpp>
-#include <elden-x/gameman.hpp>
+#include <elden-x/game_man.hpp>
 
 #include "veteran_speffect.hpp"
 #include "veteran_config.hpp"
@@ -21,7 +21,7 @@ static void setup_mod()
 {
     modutils::initialize();
 
-    from::CS::SoloParamRepository::wait_for_params();
+    er::CS::SoloParamRepository::wait_for_params();
 
     spdlog::info("Sleeping for {}ms...", veteran::config::initialize_delay);
     std::this_thread::sleep_for(std::chrono::milliseconds(veteran::config::initialize_delay));

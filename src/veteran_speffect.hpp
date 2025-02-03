@@ -12,10 +12,10 @@ static constexpr int freecam_speffect_id = 3241;
 
 static constexpr unsigned char freecam_patch[] = {0xB0, 0x01, 0xC3};    // mov al,1; ret
 
-// typedef int apply_speffect_fn(from::CS::ChrIns *chrins, unsigned int speffect_id, bool unk);
-// typedef int clear_speffect_fn(from::CS::ChrIns *chrins, unsigned int speffect_id);
-// typedef int spawn_one_shot_sfx_on_chr_fn(from::CS::ChrIns *, int dummy_poly_id, int sfx_id, void *unk);
+// typedef int apply_speffect_fn(er::CS::ChrIns *chrins, unsigned int speffect_id, bool unk);
+// typedef int clear_speffect_fn(er::CS::ChrIns *chrins, unsigned int speffect_id);
+// typedef int spawn_one_shot_sfx_on_chr_fn(er::CS::ChrIns *, int dummy_poly_id, int sfx_id, void *unk);
 
 void setup_speffects();
-bool has_speffect(from::CS::ChrIns *, int speffect_id);
+bool has_speffect(er::CS::ChrIns *, int speffect_id);
 };

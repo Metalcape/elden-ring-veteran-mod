@@ -6,11 +6,11 @@
 #include <elden-x/gamedata/game_data_man.hpp>
 #include <spdlog/spdlog.h>
 
-static from::CS::PlayerIns *player = nullptr;
-static from::CS::FieldArea *field_area = nullptr;
-static from::CS::FloatVector4 *player_pos = nullptr;
-static from::CS::FloatVector4 *debug_cam_pos = nullptr;
-static from::CS::FloatVector4 last_freecam_pos;
+static er::CS::PlayerIns *player = nullptr;
+static er::CS::FieldArea *field_area = nullptr;
+static er::CS::FloatVector4 *player_pos = nullptr;
+static er::CS::FloatVector4 *debug_cam_pos = nullptr;
+static er::CS::FloatVector4 last_freecam_pos;
 
 static std::vector<unsigned char> freecam_code_original(sizeof(veteran::freecam_patch));
 static void do_freecam_patch(bool is_apply);
@@ -20,9 +20,9 @@ static bool is_first_activation = true;
 static int *clearcount = nullptr;
 
 // Special effects applied and cleared from event scripts
-static int (*apply_speffect)(from::CS::ChrIns *chrins, unsigned int speffect_id, bool unk);
-static int (*clear_speffect)(from::CS::ChrIns *chrins, unsigned int speffect_id);
-static int apply_speffect_detour(from::CS::ChrIns *chrins, unsigned int speffect_id, bool unk) 
+static int (*apply_speffect)(er::CS::ChrIns *chrins, unsigned int speffect_id, bool unk);
+static int (*clear_speffect)(er::CS::ChrIns *chrins, unsigned int speffect_id);
+static int apply_speffect_detour(er::CS::ChrIns *chrins, unsigned int speffect_id, bool unk) 
 {
     auto retval = apply_speffect(chrins, speffect_id, unk);
 
@@ -44,8 +44,8 @@ static int apply_speffect_detour(from::CS::ChrIns *chrins, unsigned int speffect
 }
 
 // Generic function called to apply any SpEffect from any source
-static int (*special_effect_apply)(from::CS::SpecialEffect *obj, unsigned int sp_effect_id, from::CS::ChrIns *target, from::CS::ChrIns *source, from::CS::FloatVector4 *unk0, unsigned char unk1, bool is_for_object, unsigned char unk2);
-int special_effect_apply_detour(from::CS::SpecialEffect *obj, unsigned int sp_effect_id, from::CS::ChrIns *target, from::CS::ChrIns *source, from::CS::FloatVector4 *unk0, unsigned char unk1, bool is_for_object, unsigned char unk2)
+static int (*special_effect_apply)(er::CS::SpecialEffect *obj, unsigned int sp_effect_id, er::CS::ChrIns *target, er::CS::ChrIns *source, er::CS::FloatVector4 *unk0, unsigned char unk1, bool is_for_object, unsigned char unk2);
+int special_effect_apply_detour(er::CS::SpecialEffect *obj, unsigned int sp_effect_id, er::CS::ChrIns *target, er::CS::ChrIns *source, er::CS::FloatVector4 *unk0, unsigned char unk1, bool is_for_object, unsigned char unk2)
 {
     // Binoculars of the Veteran
     if(sp_effect_id == veteran::freecam_speffect_id)
@@ -66,23 +66,23 @@ int special_effect_apply_detour(from::CS::SpecialEffect *obj, unsigned int sp_ef
 }
 
 // Unused for now
-// static void (*spawn_one_shot_sfx_on_chr)(from::CS::ChrIns *, int dummy_poly_id, int sfx_id, void *unk);
+// static void (*spawn_one_shot_sfx_on_chr)(er::CS::ChrIns *, int dummy_poly_id, int sfx_id, void *unk);
 
 void veteran::setup_speffects()
 {
     spdlog::info("Waiting for GameDataMan...");
-    while (!from::CS::GameDataMan::instance())
+    while (!er::CS::GameDataMan::instance())
     {
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
 
     spdlog::info("Waiting for WorldChrMan...");
-    while (!from::CS::WorldChrManImp::instance())
+    while (!er::CS::WorldChrManImp::instance())
     {
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
 
-    auto game_data_man = reinterpret_cast<uintptr_t>(from::CS::GameDataMan::instance());
+    auto game_data_man = reinterpret_cast<uintptr_t>(er::CS::GameDataMan::instance());
     clearcount = reinterpret_cast<int*>(game_data_man + 0x120);
 
     // Locate both ChrIns::ApplyEffect() and ChrIns::ClearSpEffect() from this snippet that manages
@@ -122,7 +122,7 @@ void veteran::setup_speffects()
         }
     );
 
-    clear_speffect = reinterpret_cast<int(*)(from::CS::ChrIns *, unsigned int)>(clear_speffect_addr);
+    clear_speffect = reinterpret_cast<int(*)(er::CS::ChrIns *, unsigned int)>(clear_speffect_addr);
 
     // SpecialEffect::Apply
     modutils::hook(
@@ -157,8 +157,8 @@ static void do_freecam_patch(bool is_apply)
 {
     // Find memory addresses
     // Must be done every time to avoid crashing after quitout
-    player = from::CS::WorldChrManImp::instance()->main_player;
-    auto field_area_ptr = modutils::scan<from::CS::FieldArea *>(
+    player = er::CS::WorldChrManImp::instance()->main_player;
+    auto field_area_ptr = modutils::scan<er::CS::FieldArea *>(
         {
             .aob = "48 8B 3D ?? ?? ?? ??"
                    "49 8B D8"
@@ -222,7 +222,7 @@ static void do_freecam_patch(bool is_apply)
     }
 }
 
-bool veteran::has_speffect(from::CS::ChrIns *player, int speffect_id)
+bool veteran::has_speffect(er::CS::ChrIns *player, int speffect_id)
 {
     // OR short-circuit used here
     if (player == nullptr || player->special_effects == nullptr)
