@@ -11,6 +11,7 @@ static er::CS::FieldArea *field_area = nullptr;
 static er::CS::FloatVector4 *player_pos = nullptr;
 static er::CS::FloatVector4 *debug_cam_pos = nullptr;
 static er::CS::FloatVector4 last_freecam_pos;
+static struct er::CS::mapid_st last_map;
 
 static std::vector<unsigned char> freecam_code_original(sizeof(veteran::freecam_patch));
 static void do_freecam_patch(bool is_apply);
@@ -18,6 +19,16 @@ static bool (*can_debug_cam_activate)();
 static bool is_first_activation = true;
 
 static int *clearcount = nullptr;
+
+static bool operator==(const er::CS::mapid_st lhs, const er::CS::mapid_st rhs)
+{
+    return lhs.area == rhs.area && lhs.block == rhs.block && lhs.region == rhs.region && lhs.subregion == rhs.subregion;
+}
+
+static bool operator!=(const er::CS::mapid_st lhs, const er::CS::mapid_st rhs)
+{
+    return lhs.area != rhs.area || lhs.block != rhs.block || lhs.region != rhs.region || lhs.subregion != rhs.subregion;
+}
 
 // Special effects applied and cleared from event scripts
 static int (*apply_speffect)(er::CS::ChrIns *chrins, unsigned int speffect_id, bool unk);
@@ -192,8 +203,12 @@ static void do_freecam_patch(bool is_apply)
             freecam_code_original = buffer;
             modutils::write(veteran::freecam_patch, can_debug_cam_activate, sizeof(veteran::freecam_patch));
 
-            if(is_first_activation)
+            // First activation, or new activation in a different map
+            if(is_first_activation || player->current_map != last_map)
             {
+                // Save map id for position tracking
+                last_map = player->current_map;
+
                 debug_cam_pos->x = player_pos->x;
                 debug_cam_pos->y = player_pos->y + 1.7f;  // Adjust to player's head
                 debug_cam_pos->z = player_pos->z;
@@ -201,6 +216,7 @@ static void do_freecam_patch(bool is_apply)
                 last_freecam_pos = *debug_cam_pos;
                 is_first_activation = false;
             }
+            // New activation within the same map
             else
             {
                 *debug_cam_pos = last_freecam_pos;
