@@ -7,6 +7,8 @@ BASE FLAG ID: 1040640000
 1040640003:	Disabilita NPC specimen storehouse
 1040640004:	Disabilita NPC camera oscura
 1040640005:	Disabilita NPC da Messmer
+1040640006:	Disabilita NPC a Rauh
+1040640007:	Disabilita NPC Enir-Ilim
 1040640100:	Challenge Messmer avviata
 
 --- Effetti ---
@@ -18,6 +20,8 @@ BASE FLAG ID: 1040640000
 1040647000:	Binocolo pick up
 1040647010:	NG+ pick up
 1040647020:	Mano sciolta pick up
+1040647030:	Elmo regale
+1040647040:	Spirit ash Sabaku
 
 --- Grazie ---
 104064800x:	Grazie argentate shadow keep -> pillar
@@ -54,3 +58,12 @@ BASE FLAG ID: 1040640000
 1040649041:	Secondo dialogo letto
 1040649042:	Terzo dialogo letto ( --> EMEVD )
 
+--- Spettro Rauh ---
+1040649050:	Primo dialogo letto
+1040649051:	Secondo dialogo letto
+1040649052:	Scelta 1 fatta
+1040649053:	Scelta 2 fatta
+1040649054:	Ultimo dialogo letto ( --> EMEVD )
+
+--- Spettro Enir-Ilim ---
+1040649060:	Primo dialogo letto
