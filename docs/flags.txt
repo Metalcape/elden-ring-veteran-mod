@@ -67,3 +67,5 @@ BASE FLAG ID: 1040640000
 
 --- Spettro Enir-Ilim ---
 1040649060:	Primo dialogo letto
+1040649061:	Secondo dialogo letto
+1040649062:	Terzo dialogo letto ( ---> EMEVD )
